@@ -1,3 +1,5 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export type Props = {
     id: number,
@@ -101,5 +103,3 @@ export const tasks: Props[] = [
         Opacity: 0.5,
     }
 ]
-
-

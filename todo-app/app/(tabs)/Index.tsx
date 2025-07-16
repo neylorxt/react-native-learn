@@ -1,36 +1,94 @@
-import {Text, View, StyleSheet, StatusBar, FlatList} from "react-native";
+import {Text, View, StyleSheet, FlatList} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FontAwesome } from "@expo/vector-icons";
+
 import TaskItem from "@/components/TaskItem";
-import {tasks as initialTasks, StatusColors, Props} from "@/Data/data";
-import {useState} from "react";
+import {StatusColors, Props, Status} from "@/Data/data";
+import {useCallback, useEffect, useState} from "react";
+import {getDataInStorage, saveDataInStorage} from "@/Data/storage";
+import {useFocusEffect} from "expo-router";
+
 
 export default function Index() {
-    const [tasks, setTasks] = useState<Props[]>(initialTasks);
+    const [tasks, setTasks] = useState<Props[]>([]);
 
-    // Fonction pour mettre à jour une tâche
+    // Mettre à jour une tâche
     const updateTask = (id: number, updatedTask: Partial<Props>) => {
-        setTasks(prevTasks =>
-            prevTasks.map(task =>
-                task.id === id ? { ...task, ...updatedTask } : task
-            )
-        );
+        setTasks(prevTasks => {
+            const updated = prevTasks.map(task => {
+                if (task.id === id) {
+
+                    // On crée la nouvelle tâche mise à jour
+                    const newTask = { ...task, ...updatedTask };
+
+                    // On ajuste l'opacité selon le status
+                    if (newTask.status === Status.Cancelled) {
+                        newTask.Opacity = 0.5;
+                    } else {
+                        newTask.Opacity = 1;
+                    }
+                    return newTask;
+                }
+                return task;
+            });
+
+            saveDataInStorage(updated); // Sauvegarde
+            return updated;
+        });
     };
 
-    // Fonction pour supprimer une tâche
+    // Supprime une tâche
     const deleteTask = (id: number) => {
-        setTasks(prevTasks => prevTasks.filter(task => task.id !== id));
+        setTasks(prevTasks => {
+            const updated = prevTasks.filter(task => task.id !== id);
+            saveDataInStorage(updated); // Sauvegarde
+            return updated;
+        });
     };
 
-    // Fonction pour ajouter une tâche
-    const addTask = (newTask: Omit<Props, 'id'>) => {
-        const newId = Math.max(...tasks.map(t => t.id)) + 1;
-        setTasks(prevTasks => [...prevTasks, { ...newTask, id: newId }]);
-    };
+
+    useEffect(() => {
+
+        const fetchData = async () => {
+            const storedTasks = await getDataInStorage();
+            if (storedTasks) {
+                setTasks(storedTasks);
+            }
+        };
+
+        fetchData();
+    }, [])
+
+    // REMPLACEZ votre useEffect par useFocusEffect
+    useFocusEffect(
+        useCallback(() => {
+            const fetchData = async () => {
+                //console.log("Rechargement des tâches..."); // Pour déboguer
+                const storedTasks = await getDataInStorage();
+
+                if (storedTasks) {
+                    setTasks(storedTasks);
+                    // console.log("Tâches chargées:", storedTasks.length); // Pour déboguer
+                    // console.log( storedTasks[0] )
+                } else {
+                    //console.log("Aucune tâche trouvée"); // Pour déboguer
+                }
+            };
+
+            fetchData();
+        }, [])
+    );
+
+
+    // // Sauvegarder automatiquement quand tasks change
+    // useEffect(() => {
+    //     if (tasks.length > 0) {
+    //         saveDataInStorage(tasks);
+    //     }
+    // }, [tasks]);
 
     return (
         <SafeAreaView style={styles.main}>
-            <StatusBar barStyle="light-content" backgroundColor={styles.main.backgroundColor} />
 
             <View style={styles.header}>
                 <Text style={styles.headerTitle}>Todo-App</Text>
@@ -78,13 +136,14 @@ export default function Index() {
 
                 <View style={styles.bodyContent}>
 
-                    {
-                        tasks.length > 0 ? (
-                            <FlatList
-                                data={tasks}
-                                keyExtractor={item => item.id.toString()}
-                                renderItem={({ item }) => (
-
+                    {/* Remplacez temporairement votre condition par : */}
+                    {tasks.length > 0 && (
+                        <FlatList
+                            data={tasks}
+                            keyExtractor={item => item.id.toString()}
+                            renderItem={({ item }) => {
+                                //console.log("Rendu item:", item); // Déboguer chaque item
+                                return (
                                     <TaskItem
                                         onUpdateTask={updateTask}
                                         deleteTask={deleteTask}
@@ -93,15 +152,20 @@ export default function Index() {
                                         style={[
                                             styles.taskItem, {
                                                 backgroundColor: StatusColors[item.status],
-                                                opacity: item.Opacity ?? 1,}
+                                                opacity: (item.Opacity && item.Opacity > 0) ?  item.Opacity : 1,
+                                            }
                                         ]}
                                         textStyle={styles.taskText}
                                     />
+                                );
+                            }}
+                            ItemSeparatorComponent={() => <View style={styles.separator} />}
+                        />
+                    )}
 
-                                )}
-                                ItemSeparatorComponent={() => <View style={styles.separator} /> }
-                            />
-                        ) : (
+
+                    {
+                        tasks.length === 0 && (
                             <TaskItem
                                 onUpdateTask={updateTask}
                                 deleteTask={deleteTask}

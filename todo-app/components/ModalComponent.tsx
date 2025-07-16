@@ -80,7 +80,6 @@ const ModalComponent: React.FC<ModalComponentProps> = ({onUpdateTask, deleteTask
             setCanEdit(true);
         }
 
-        console.log("Données du formulaire:", formData);
     };
 
     const handleDelete = () => {
