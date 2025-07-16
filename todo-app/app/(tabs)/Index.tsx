@@ -1,113 +1,32 @@
 import {Text, View, StyleSheet, StatusBar, FlatList} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FontAwesome } from "@expo/vector-icons";
-
-type Props = {
-    id: number,
-    title: string,
-    description: string,
-    date: string,
-    status: Status,
-    priority: Prirority,
-    Opacity?: number,
-};
-
-// Enum des statuts
-export enum Status {
-    Waiting = "waiting",
-    InProgress = "in progress",
-    Finished = "finished",
-    Cancelled = "cancelled",
-}
-
-// Enum des statuts
-export enum Prirority {
-    Low = "low",
-    Medium = "medium",
-    High = "high",
-    Urgent = "urgent",
-}
-
-// Couleurs associées aux statuts
-export const StatusColors: Record<Status, string> = {
-    [Status.Waiting]: "#F6AD55",
-    [Status.InProgress]: "#4299E1",
-    [Status.Finished]: "#48BB78",
-    [Status.Cancelled]: "#FC8181",
-}
-
-const tasks: Props[] = [
-    {
-        id: 1,
-        title: "Task 1",
-        description: "This is a task description",
-        date: "2021-05-01",
-        status: Status.Waiting,
-        priority: Prirority.Low,
-    },
-    {
-        id: 2,
-        title: "Task 2",
-        description: "This is a task description",
-        date: "2021-05-02",
-        status: Status.InProgress,
-        priority: Prirority.Medium,
-    },
-    {
-        id: 3,
-        title: "Task 3",
-        description: "This is a task description",
-        date: "2021-05-03",
-        status: Status.Finished,
-        priority: Prirority.High,
-    },
-    {
-        id: 4,
-        title: "Task 4",
-        description: "This is a task description",
-        date: "2021-05-04",
-        status: Status.Cancelled,
-        priority: Prirority.Urgent,
-        Opacity: 0.5,
-    },
-    {
-        id: 5,
-        title: "Task 5",
-        description: "This is a task description",
-        date: "2021-05-05",
-        status: Status.Waiting,
-        priority: Prirority.High,
-    },
-    {
-        id: 6,
-        title: "Task 6",
-        description: "This is a task description",
-        date: "2021-05-06",
-        status: Status.InProgress,
-        priority: Prirority.Medium,
-    },
-    {
-        id: 7,
-        title: "Task 7",
-        description: "This is a task description",
-        date: "2021-05-07",
-        status: Status.Finished,
-        priority: Prirority.Low,
-    },
-    {
-        id: 8,
-        title: "Task 8",
-        description: "This is a task description",
-        date: "2021-05-04",
-        status: Status.Cancelled,
-        priority: Prirority.Urgent,
-        Opacity: 0.5,
-    }
-]
-
-
+import TaskItem from "@/components/TaskItem";
+import {tasks as initialTasks, StatusColors, Props} from "@/Data/data";
+import {useState} from "react";
 
 export default function Index() {
+    const [tasks, setTasks] = useState<Props[]>(initialTasks);
+
+    // Fonction pour mettre à jour une tâche
+    const updateTask = (id: number, updatedTask: Partial<Props>) => {
+        setTasks(prevTasks =>
+            prevTasks.map(task =>
+                task.id === id ? { ...task, ...updatedTask } : task
+            )
+        );
+    };
+
+    // Fonction pour supprimer une tâche
+    const deleteTask = (id: number) => {
+        setTasks(prevTasks => prevTasks.filter(task => task.id !== id));
+    };
+
+    // Fonction pour ajouter une tâche
+    const addTask = (newTask: Omit<Props, 'id'>) => {
+        const newId = Math.max(...tasks.map(t => t.id)) + 1;
+        setTasks(prevTasks => [...prevTasks, { ...newTask, id: newId }]);
+    };
 
     return (
         <SafeAreaView style={styles.main}>
@@ -158,16 +77,46 @@ export default function Index() {
 
 
                 <View style={styles.bodyContent}>
-                    <FlatList
-                        data={tasks}
-                        keyExtractor={item => item.id.toString()}
-                        renderItem={({ item }) => (
-                            <View style={[styles.taskItem, { backgroundColor: StatusColors[item.status], opacity: item.Opacity ?? 1 }]}>
-                                <Text style={styles.taskText}>{item.title}</Text>
-                            </View>
-                        )}
-                        ItemSeparatorComponent={() => <View style={styles.separator} /> }
-                        />
+
+                    {
+                        tasks.length > 0 ? (
+                            <FlatList
+                                data={tasks}
+                                keyExtractor={item => item.id.toString()}
+                                renderItem={({ item }) => (
+
+                                    <TaskItem
+                                        onUpdateTask={updateTask}
+                                        deleteTask={deleteTask}
+                                        itemId={item.id}
+                                        title={item.title}
+                                        style={[
+                                            styles.taskItem, {
+                                                backgroundColor: StatusColors[item.status],
+                                                opacity: item.Opacity ?? 1,}
+                                        ]}
+                                        textStyle={styles.taskText}
+                                    />
+
+                                )}
+                                ItemSeparatorComponent={() => <View style={styles.separator} /> }
+                            />
+                        ) : (
+                            <TaskItem
+                                onUpdateTask={updateTask}
+                                deleteTask={deleteTask}
+                                itemId={0}
+                                title={"Aucune task"}
+                                style={[
+                                    styles.taskItem, {
+                                        backgroundColor: "orange",
+                                        opacity: 1}
+                                ]}
+                                textStyle={styles.taskText}
+                            />
+                        )
+                    }
+
                 </View>
             </View>
 

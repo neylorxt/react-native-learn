@@ -10,7 +10,7 @@ export default function RootLayout() {
             }}>
 
                 <Tabs.Screen
-                    name="index"
+                    name="Index"
                     options={{
                         title: 'Home',
                         tabBarIcon: ({color}) => <FontAwesome size={28} name={"home"} color={color} />
@@ -18,7 +18,7 @@ export default function RootLayout() {
                 />
 
                 <Tabs.Screen
-                    name="addTask"
+                    name="AddTask"
                     options={{
                         title: 'Add Task',
                         tabBarIcon: ({color}) => <FontAwesome size={28} name={"plus"} color={color} />
