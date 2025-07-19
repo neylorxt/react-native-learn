@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useCallback, useEffect} from "react";
 import {Text, View, StyleSheet, TextInput, Pressable, Alert} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {Controller, useForm} from "react-hook-form";
@@ -7,6 +7,7 @@ import {Picker} from "@react-native-picker/picker";
 import {Priority, Props, Status} from "@/Data/data";
 
 import {getDataInStorage, saveDataInStorage} from "@/Data/storage"
+import {useFocusEffect} from "expo-router";
 
 type FormValues = Omit<Props, "id">;
 
@@ -24,6 +25,13 @@ export default function AddTask() {
         }
 
     });
+
+    // REMPLACEZ votre useEffect par useFocusEffect
+    useFocusEffect(
+        useCallback(() => {
+            reset()
+        }, [])
+    );
 
 
 
