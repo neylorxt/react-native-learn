@@ -1,4 +1,3 @@
-import {IconMail} from "@/components/icons";
 import {StyleSheet, Text, TextInput, View} from "react-native";
 import React from "react";
 import {InputModeOptions} from "react-native/Libraries/Components/TextInput/TextInput";
@@ -48,7 +47,7 @@ export default function TextAndInput({ Icon, label="label", placeholderText="tex
 const styles = StyleSheet.create({
     input:{
         padding: 10,
-        borderRadius: 10,
+        borderRadius: 20,
         backgroundColor: "white",
         color: "black",
         fontSize: 16,

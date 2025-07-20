@@ -24,11 +24,11 @@ export default function Index() {
             }} >
                 <Image
                     style={{
-                        height: 300,
-                        width: 300,
+                        height: 350,
+                        width: 350,
                         marginHorizontal: "auto"
                     }}
-                    source={{ uri: "https://cdn-icons-png.flaticon.com/256/11449/11449501.png" }}
+                    source={{ uri: "https://cdn-icons-png.flaticon.com/512/10559/10559743.png" }}
                 />
             </View>
 

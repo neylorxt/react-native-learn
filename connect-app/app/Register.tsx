@@ -87,7 +87,7 @@ export default function Register() {
                       <View style={{
                           marginTop: 20,
                           flexDirection: 'row',
-                          gap: 10
+                          gap: 10,
                       }}>
                           <Checkbox
                               value={isChecked}
@@ -95,14 +95,15 @@ export default function Register() {
                               color={isChecked ? '#4630EB' : undefined}
                           />
 
-                          <Text>
-                              I agree to the <Text style={{
+                          <View style={{ flexDirection: "row", gap: 2}}>
+                              <Text>I agree to the</Text>
+                              <Text style={{
                                   color: "darkslateblue",
-                                  fontWeight: "bold"
+                                  fontWeight: "bold",
                               }}>
-                                   Terms & Conditions
+                                  Terms & Conditions
                               </Text>
-                          </Text>
+                          </View>
                       </View>
 
                   </View>
