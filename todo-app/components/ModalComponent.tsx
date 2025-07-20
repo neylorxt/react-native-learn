@@ -2,13 +2,13 @@
 import React, {useEffect, useState} from 'react';
 import {Modal, StyleSheet, Text, Pressable, View, TextInput, Alert} from 'react-native';
 import {FontAwesome} from "@expo/vector-icons";
-import {Priority, Props, Status, tasks} from "@/Data/data";
+import {Priority, Props, Status} from "@/Data/data";
 import { Controller, useForm} from "react-hook-form";
 
 import {Picker} from '@react-native-picker/picker';
 
 type ModalComponentProps = {
-    itemId: number;
+    item: Props | null;
     modalVisible: boolean;
     setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
     onUpdateTask: (id: number, updatedData: Partial<Props>) => void;
@@ -17,9 +17,8 @@ type ModalComponentProps = {
 
 type FormValues = Omit<Props, "id">;
 
-const ModalComponent: React.FC<ModalComponentProps> = ({onUpdateTask, deleteTask, itemId, modalVisible, setModalVisible })  => {
+const ModalComponent: React.FC<ModalComponentProps> = ({item, onUpdateTask, deleteTask, modalVisible, setModalVisible })  => {
 
-    const [item, setItem] = useState<Props | undefined>();
     const [canEdit, setCanEdit] = useState<boolean>(false);
 
 
@@ -37,22 +36,12 @@ const ModalComponent: React.FC<ModalComponentProps> = ({onUpdateTask, deleteTask
     });
 
 
-    const getItemById = () => {
-        const foundItem = tasks.find(task => task.id === itemId);
-        setItem(foundItem);
-    };
-
-
-
-    useEffect( () => {
-        getItemById();
-    }, [itemId])
 
     useEffect(() => {
         if (item) {
             reset({
                 title: item.title,
-                description: item.description,
+                description: item.description ?? "salut",
                 date: item.date,
                 status: item.status,
                 priority: item.priority,
@@ -64,8 +53,8 @@ const ModalComponent: React.FC<ModalComponentProps> = ({onUpdateTask, deleteTask
 
 
     const handleEdit = (formData: FormValues) => {
-        if (canEdit) {
-            onUpdateTask(itemId, {
+        if (canEdit && item) {
+            onUpdateTask(item.id, {
                 title: formData.title,
                 description: formData.description,
                 date: formData.date,
@@ -83,8 +72,10 @@ const ModalComponent: React.FC<ModalComponentProps> = ({onUpdateTask, deleteTask
     };
 
     const handleDelete = () => {
-        deleteTask(itemId);
-        setModalVisible(!modalVisible)
+        if (item){
+            deleteTask(item.id);
+            setModalVisible(!modalVisible)
+        }
     }
 
 
@@ -102,14 +93,21 @@ const ModalComponent: React.FC<ModalComponentProps> = ({onUpdateTask, deleteTask
                 visible={modalVisible}
                 onRequestClose={() => {
                     setModalVisible(!modalVisible);
-                }}>
+                }}
+
+            >
                 <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
+                    <View style={[styles.modalView, {
+                        backgroundColor: canEdit ? "lightcyan" : "",
+                    }]}>
 
 
                         <Pressable
                             style={[styles.button, styles.buttonClose]}
-                            onPress={() => setModalVisible(!modalVisible)}>
+                            onPress={() => {
+                                setCanEdit(false);
+                                setModalVisible(!modalVisible);
+                            }}>
                             <FontAwesome name={"close"} size={12} color={"white"} />
                         </Pressable>
 
@@ -117,7 +115,10 @@ const ModalComponent: React.FC<ModalComponentProps> = ({onUpdateTask, deleteTask
                         <View style={styles.modalViewContent}>
 
                             <View style={ styles.modalViewHeader }>
-                                <Text style={styles.modalText}>{item?.title}</Text>
+                                <Text style={[styles.modalText, {
+                                    fontWeight: "bold",
+                                    fontSize: 20
+                                }]}>{canEdit ? "Edit" : "View"}</Text>
                             </View>
 
                             <View style={styles.modalViewBody}>

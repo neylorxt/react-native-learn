@@ -4,7 +4,7 @@ import ModalComponent from './ModalComponent';
 import {Props} from "@/Data/data";
 
 type TaskItemProps = {
-    itemId: number;
+    item: Props | null;
     title: string;
     style?: ViewStyle | ViewStyle[];
     textStyle?: TextStyle | TextStyle[];
@@ -12,7 +12,7 @@ type TaskItemProps = {
     deleteTask: (id: number) => void;
 };
 
-const TaskItem: React.FC<TaskItemProps> = ({onUpdateTask, deleteTask, itemId, title, style, textStyle }) => {
+const TaskItem: React.FC<TaskItemProps> = ({onUpdateTask, deleteTask, item, title, style, textStyle }) => {
 
     const [modalVisible, setModalVisible] = useState<boolean>(false);
 
@@ -23,7 +23,7 @@ const TaskItem: React.FC<TaskItemProps> = ({onUpdateTask, deleteTask, itemId, ti
 
     return <>
         <Pressable onPress={ () => {
-            if (itemId > 0) {
+            if (item !== undefined) {
                 showModal();
             }
 
@@ -35,9 +35,9 @@ const TaskItem: React.FC<TaskItemProps> = ({onUpdateTask, deleteTask, itemId, ti
         </Pressable>
 
         <ModalComponent
+            item={item}
             deleteTask={deleteTask}
             onUpdateTask={onUpdateTask}
-            itemId={itemId}
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}
         />

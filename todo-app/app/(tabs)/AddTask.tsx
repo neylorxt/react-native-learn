@@ -26,7 +26,7 @@ export default function AddTask() {
 
     });
 
-    // REMPLACEZ votre useEffect par useFocusEffect
+
     useFocusEffect(
         useCallback(() => {
             reset()
@@ -43,7 +43,9 @@ export default function AddTask() {
             formData.Opacity = 1;
         }
 
+
         const existingTasks = await getDataInStorage() || [];
+
 
         // Une nouvelle tâche avec un ID unique
         const newId = existingTasks.length > 0 ? Math.max(...existingTasks.map(t => t.id)) + 1 : 1;
@@ -55,16 +57,17 @@ export default function AddTask() {
         // Ajouter la nouvelle tâche à la liste existante
         const updatedTasks = [...existingTasks, newTask];
 
+
         // Sauvegarder dans le stockage
         try {
             await saveDataInStorage(updatedTasks);
             reset();
             // Message de succès
-            Alert.alert('Succès', 'Tâche ajoutée avec succès!');
+            Alert.alert('Successful',  "Task added successfully");
             //console.log('Tâche ajoutée avec succès');
 
         } catch (error) {
-            Alert.alert('Erreur', 'Erreur lors de la sauvegarde' );
+            Alert.alert('Error', 'Saving error' );
             //console.error('Erreur lors de la sauvegarde:', error);
         }
     }
@@ -78,7 +81,7 @@ export default function AddTask() {
             .map(([field, error]: [string, any]) => `${field}: ${error.message || 'Requis'}`)
             .join('\n');
 
-        Alert.alert('Erreur', errorMessages);
+        Alert.alert('Error', errorMessages);
 
         //console.log('Messages d\'erreur:', errorMessages);
         // Vous pouvez aussi afficher une Alert si vous importez Alert de react-native
@@ -115,10 +118,10 @@ export default function AddTask() {
                                 control={control}
                                 name={'title'}
                                 rules={{
-                                    required: 'Le titre est requis',
+                                    required: "Title required",
                                     minLength: {
                                         value: 3,
-                                        message: 'Le titre doit contenir au moins 3 caractères'
+                                        message: "Title must contain at least 3 characters"
                                     }
                                 }}
                                 render={ ({ field: {onChange, value, onBlur}} ) => (
@@ -142,10 +145,10 @@ export default function AddTask() {
                                 control={control}
                                 name={'description'}
                                 rules={{
-                                    required: 'La description est requise',
+                                    required: "Description required",
                                     minLength: {
                                         value: 3,
-                                        message: 'La description doit contenir au moins 3 caractères'
+                                        message: "The description must contain at least 3 characters"
                                     }
                                 }}
                                 render={ ({ field: {onChange, value, onBlur} }) => (
@@ -172,10 +175,10 @@ export default function AddTask() {
                                 control={control}
                                 name={'date'}
                                 rules={{
-                                    required: 'La Date est requise',
+                                    required: "Date required",
                                     minLength: {
                                         value: 8,
-                                        message: 'La Date doit contenir au moins 8 caractères'
+                                        message: "Date must contain at least 8 characters"
                                     }
                                 }}
                                 render={ ({ field: {onChange, value, onBlur} }) => (

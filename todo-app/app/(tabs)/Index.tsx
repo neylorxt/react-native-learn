@@ -11,6 +11,13 @@ import {useFocusEffect} from "expo-router";
 
 export default function Index() {
     const [tasks, setTasks] = useState<Props[]>([]);
+    const [taskStatus, setTaskStatus] = useState<Record<Status, number>>({
+        [Status.Waiting]: 0,
+        [Status.InProgress]: 0,
+        [Status.Finished]: 0,
+        [Status.Cancelled]: 0,
+    });
+
 
     // Mettre à jour une tâche
     const updateTask = (id: number, updatedTask: Partial<Props>) => {
@@ -53,11 +60,19 @@ export default function Index() {
             const storedTasks = await getDataInStorage();
             if (storedTasks) {
                 setTasks(storedTasks);
+
+                setTaskStatus( countByStatus(storedTasks) )
             }
         };
 
         fetchData();
     }, [])
+
+    useEffect(() => {
+        if (tasks){
+            setTaskStatus( countByStatus(tasks) )
+        }
+    }, [tasks]);
 
     // REMPLACEZ votre useEffect par useFocusEffect
     useFocusEffect(
@@ -68,24 +83,13 @@ export default function Index() {
 
                 if (storedTasks) {
                     setTasks(storedTasks);
-                    // console.log("Tâches chargées:", storedTasks.length); // Pour déboguer
-                    // console.log( storedTasks[0] )
-                } else {
-                    //console.log("Aucune tâche trouvée"); // Pour déboguer
+                    setTaskStatus( countByStatus(storedTasks) )
                 }
             };
 
             fetchData();
         }, [])
     );
-
-
-    // // Sauvegarder automatiquement quand tasks change
-    // useEffect(() => {
-    //     if (tasks.length > 0) {
-    //         saveDataInStorage(tasks);
-    //     }
-    // }, [tasks]);
 
     return (
         <SafeAreaView style={styles.main}>
@@ -101,7 +105,7 @@ export default function Index() {
                         <FontAwesome name={"clock-o"} size={35} color={styles.bodyHeaderCardIcon.color} style={styles.bodyHeaderCardIcon} />
                         <View style={styles.bodyHeaderCardContent}>
                             <Text style={styles.bodyHeaderCardContentText}>Today</Text>
-                            <Text style={styles.bodyHeaderCardContentNumber}>6</Text>
+                            <Text style={styles.bodyHeaderCardContentNumber}> {taskStatus[Status.Waiting] ?? 0 } </Text>
                         </View>
                     </View>
 
@@ -110,7 +114,7 @@ export default function Index() {
                         <FontAwesome name={"calendar"} size={35} color={styles.bodyHeaderCardIcon.color} style={styles.bodyHeaderCardIcon} />
                         <View style={styles.bodyHeaderCardContent}>
                             <Text style={styles.bodyHeaderCardContentText}>Scheduled</Text>
-                            <Text style={styles.bodyHeaderCardContentNumber}>13</Text>
+                            <Text style={styles.bodyHeaderCardContentNumber}>{taskStatus[Status.InProgress] ?? 0 }</Text>
                         </View>
                     </View>
 
@@ -119,7 +123,7 @@ export default function Index() {
                         <FontAwesome name={"check-circle"} size={35} color={styles.bodyHeaderCardIcon.color} style={styles.bodyHeaderCardIcon} />
                         <View style={styles.bodyHeaderCardContent}>
                             <Text style={styles.bodyHeaderCardContentText}>Finished</Text>
-                            <Text style={styles.bodyHeaderCardContentNumber}>20</Text>
+                            <Text style={styles.bodyHeaderCardContentNumber}>{taskStatus[Status.Finished] ?? 0 }</Text>
                         </View>
                     </View>
 
@@ -128,7 +132,7 @@ export default function Index() {
                         <FontAwesome name={"times-circle-o"} size={35} color={styles.bodyHeaderCardIcon.color} style={styles.bodyHeaderCardIcon} />
                         <View style={styles.bodyHeaderCardContent}>
                             <Text style={styles.bodyHeaderCardContentText}>Canceled</Text>
-                            <Text style={styles.bodyHeaderCardContentNumber}>1</Text>
+                            <Text style={styles.bodyHeaderCardContentNumber}>{taskStatus[Status.Cancelled] ?? 0 }</Text>
                         </View>
                     </View>
                 </View>
@@ -147,7 +151,7 @@ export default function Index() {
                                     <TaskItem
                                         onUpdateTask={updateTask}
                                         deleteTask={deleteTask}
-                                        itemId={item.id}
+                                        item={item}
                                         title={item.title}
                                         style={[
                                             styles.taskItem, {
@@ -169,11 +173,11 @@ export default function Index() {
                             <TaskItem
                                 onUpdateTask={updateTask}
                                 deleteTask={deleteTask}
-                                itemId={0}
-                                title={"Aucune task"}
+                                item={null}
+                                title={"No task"}
                                 style={[
                                     styles.taskItem, {
-                                        backgroundColor: "orange",
+                                        backgroundColor: "rgba(255, 0,0,.5)",
                                         opacity: 1}
                                 ]}
                                 textStyle={styles.taskText}
@@ -187,6 +191,21 @@ export default function Index() {
         </SafeAreaView>
     );
 }
+
+
+const countByStatus = (items: Props[]) => {
+    return items.reduce<Record<Status, number>>((acc, item) => {
+        acc[item.status] = (acc[item.status] || 0) + 1;
+        return acc;
+    }, {
+        [Status.Waiting]: 0,
+        [Status.InProgress]: 0,
+        [Status.Finished]: 0,
+        [Status.Cancelled]: 0,
+    });
+};
+
+
 
 const styles = StyleSheet.create({
     main: {

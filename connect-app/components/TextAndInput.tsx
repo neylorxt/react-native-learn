@@ -7,7 +7,7 @@ type Props = {
     label : string;
     placeholderText : string;
     type?: InputModeOptions;
-
+    
 }
 
 export default function TextAndInput({ Icon, label="label", placeholderText="text", type="text" } : Props) {
@@ -22,7 +22,7 @@ export default function TextAndInput({ Icon, label="label", placeholderText="tex
             }}>
                 <Icon style={{
                     color: "rgb(22, 34, 47 )"
-                }}   />
+                }} />
 
                 <Text style={{
                     fontSize: 17,
