@@ -48,7 +48,7 @@ export default function TextAndInput({ Icon, label="label", placeholderText="tex
 const styles = StyleSheet.create({
     input:{
         padding: 10,
-        borderRadius: 20,
+        borderRadius: 10,
         backgroundColor: "white",
         color: "black",
         fontSize: 16,
@@ -56,6 +56,6 @@ const styles = StyleSheet.create({
         height: 50,
         elevation: 5,
         shadowColor: '#171717',
-        shadowRadius: 3,
+        shadowRadius: 20,
     }
 })

@@ -1,6 +1,5 @@
 import {Text, View, StyleSheet, KeyboardAvoidingView, Platform, Image} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
-import {FontAwesome} from "@expo/vector-icons";
 
 import {IconMail, IconPassword, IconUser, IconGoogle, IconApple, IconFacebook} from "@/components/icons";
 import TextAndInput from "@/components/TextAndInput";

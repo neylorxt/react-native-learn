@@ -1,15 +1,12 @@
-import {Text, View, StyleSheet, KeyboardAvoidingView, Platform, Image} from "react-native";
+import {Text, View, KeyboardAvoidingView, Platform, Image} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 
 import {IconApple, IconFacebook, IconGoogle, IconMail, IconPassword} from "@/components/icons";
 import TextAndInput from "@/components/TextAndInput";
-import Checkbox from 'expo-checkbox';
-import {useState} from "react";
 import {Link} from "expo-router";
 
 
 export default function Login() {
-    const [isChecked, setChecked] = useState(false);
 
   return (
       <KeyboardAvoidingView
@@ -158,18 +155,3 @@ export default function Login() {
 
   );
 }
-
-const styles = StyleSheet.create({
-    input:{
-        padding: 10,
-        borderRadius: 20,
-        backgroundColor: "white",
-        color: "black",
-        fontSize: 16,
-        fontWeight: "bold",
-        height: 50,
-        elevation: 5,
-        shadowColor: '#171717',
-        shadowRadius: 3,
-    }
-})
