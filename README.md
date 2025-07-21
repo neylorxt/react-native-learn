@@ -83,13 +83,8 @@ npx expo start
 - Appuyez sur 'i' dans le terminal pour ouvrir sur un simulateur iOS
 
 ## 📈 Version
-<<<<<<< HEAD
 - Connect App: 0.0.1
 - Game Store: 0.0.1
-=======
-- Connect App: 1.0.0
-- Game Store: 1.0.0
->>>>>>> 7276beeb17387e8c76f79680e9891a651c1cf7bd
 - Todo App: 0.2.1
 
 ## 🛠️ Technologies Communes
