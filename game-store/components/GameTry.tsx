@@ -6,11 +6,11 @@ type gameType = {
     game: GameProps;
 }
 
-const TrendingGamesCard: React.FC<gameType> = ({ game }) => {
+const GamesTry: React.FC<gameType> = ({ game }) => {
     return (
         <ImageBackground
             source={{ uri: game.imageUrl ?? '' }} // Replace with actual image URL
-            style={styles.trendingGamesBg}
+            style={styles.GamesTryBg}
             imageStyle={{ borderRadius: 20 }}>
 
             <View style={{
@@ -21,23 +21,23 @@ const TrendingGamesCard: React.FC<gameType> = ({ game }) => {
                 <FontAwesome name={game.like ? 'heart' : 'heart-o'} size={20} color="red" />
             </View>
 
-            <View style={styles.trendingGamesItem}>
+            <View style={styles.GamesTryItem}>
 
-                <Text numberOfLines={1} ellipsizeMode="tail" style={[styles.text, styles.trendingGamesItem_Text, { marginBottom: 1 }]}>{game.title}</Text>
-                <Text style={[styles.text, styles.trendingGamesItem_Text]}>{game.category}</Text>
+                <Text numberOfLines={1} ellipsizeMode="tail" style={[styles.text, styles.GamesTryItem_Text, { marginBottom: 1 }]}>{game.title}</Text>
+                <Text style={[styles.text, styles.GamesTryItem_Text]}>{game.category}</Text>
 
-                <View style={styles.trendingGamesItem_Footer}>
+                <View style={styles.GamesTryItem_Footer}>
 
                     <View style={{ flexDirection: "row", alignItems: "center", borderWidth: 1, backgroundColor: "rgba(255, 255, 255, 0.2)", padding: 4, borderRadius: 20 }}>
                         <FontAwesome name={'star'} size={20} color="yellow" />
-                        <Text numberOfLines={1} ellipsizeMode="tail" style={[styles.text, styles.trendingGamesItem_Text]}>{game.rating}</Text>
+                        <Text numberOfLines={1} ellipsizeMode="tail" style={[styles.text, styles.GamesTryItem_Text]}>{game.rating}</Text>
                     </View>
 
                     {
                         game.canInstall && (
-                            <Pressable style={styles.trendingGamesItem_FooterBtn}>
+                            <Pressable style={styles.GamesTryItem_FooterBtn}>
                                 <Text
-                                    style={[styles.text, styles.trendingGamesItem_FooterBtn_Text, {
+                                    style={[styles.text, styles.GamesTryItem_FooterBtn_Text, {
                                         fontSize: 15,
                                         textAlign: "center",
                                     }]}>Install</Text>
@@ -62,47 +62,45 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: "white"
     },
-    trendingGamesBg: {
-        height: 300,
-        width: 210,
+    GamesTryBg: {
+        height: 220,
+        width: 320,
         marginRight: 10,
         justifyContent: "flex-end",
     },
-    trendingGamesItem: {
-        height: 100,
-        borderBottomEndRadius: 20,
-        borderBottomStartRadius: 20,
+    GamesTryItem: {
+        height: 95,
+        borderBottomEndRadius: 10,
+        borderBottomStartRadius: 10,
         marginRight: 10,
         width: "100%",
         backgroundColor: "rgba(0, 0, 0, .8)",
         paddingVertical: 5,
-        borderBottomRightRadius: 20,
-        borderBottomLeftRadius: 20,
         elevation: 5,
         shadowColor: "black",
     },
-    trendingGamesItem_Text: {
+    GamesTryItem_Text: {
         color: "white",
         fontSize: 15,
         marginHorizontal: 7
     },
-    trendingGamesItem_Footer: {
+    GamesTryItem_Footer: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
         paddingHorizontal: 10,
         paddingVertical: 10,
     },
-    trendingGamesItem_FooterBtn: {
+    GamesTryItem_FooterBtn: {
         backgroundColor: "whitesmoke",
         paddingHorizontal: 20,
         paddingVertical: 5,
         borderRadius: 20
     },
-    trendingGamesItem_FooterBtn_Text: {
+    GamesTryItem_FooterBtn_Text: {
         color: "rgb(229, 42, 73)",
     },
 })
 
 
-export default TrendingGamesCard;
+export default GamesTry;
