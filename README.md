@@ -84,7 +84,7 @@ npx expo start
 
 ## 📈 Version
 - Connect App: 0.0.1
-- Game Store: 0.0.1
+- Game Store: 0.1.0
 - Todo App: 0.2.1
 
 ## 🛠️ Technologies Communes

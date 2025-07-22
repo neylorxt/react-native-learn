@@ -4,7 +4,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export default function Layout() {
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider >
       <Tabs screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: 'rgba(229, 42, 73, 1)',
@@ -20,12 +20,8 @@ export default function Layout() {
           options={{ title: 'Discover', tabBarIcon: ({ color }) => <FontAwesome name="gamepad" size={24} color={color} /> }}
         />
         <Tabs.Screen
-          name="Notification"
-          options={{ title: 'Notification', tabBarIcon: ({ color }) => <FontAwesome name="bell" size={24} color={color} /> }}
-        />
-        <Tabs.Screen
-          name="Settings"
-          options={{ title: 'Settings', tabBarIcon: ({ color }) => <FontAwesome name="cog" size={24} color={color} /> }}
+          name="Account"
+          options={{ title: 'Account', tabBarIcon: ({ color }) => <FontAwesome name="user" size={24} color={color} /> }}
         />
 
       </Tabs>

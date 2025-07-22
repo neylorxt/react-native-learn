@@ -1,7 +1,7 @@
-import { View, Text, Pressable, StyleSheet, Image } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { FontAwesome } from '@expo/vector-icons';
 import { useRouter } from "expo-router";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Index() {
   const router = useRouter();
@@ -98,3 +98,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 })
+
+
+
+//REF DU PROJET
+// IMG : https://cdn.dribbble.com/userupload/37287901/file/original-874ecf2d84995104b76e86755b7b086c.jpg?resize=752x&vertical=center
+//
+// ACCOUNT : https://cdn.dribbble.com/userupload/44128812/file/original-4fb19b12bb14bdbec6644c673075223b.png?resize=1600x1200&vertical=center
