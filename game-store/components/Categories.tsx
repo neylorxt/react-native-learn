@@ -1,6 +1,6 @@
+import { CategoriesProps } from "@/Data/Data";
 import { FontAwesome } from "@expo/vector-icons";
 import { StyleSheet, Text, View } from "react-native";
-import { CategoriesProps } from "@/Data/Data";
 
 
 
