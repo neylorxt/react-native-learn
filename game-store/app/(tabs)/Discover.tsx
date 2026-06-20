@@ -3,11 +3,15 @@ import GamesTry from "@/components/GameTry";
 import Header from "@/components/Header";
 import NewGameCard from "@/components/NewGameCard";
 import TrendingGamesCard from "@/components/TrendingGamesCard";
-import { categories, games } from "@/Data/Data";
+import {categories, GameProps, games} from "@/Data/Data";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+const gamesReverse: GameProps[] = [...games].reverse();
+
+
 export default function Discover() {
+
     return (
         <SafeAreaView style={styles.container}>
 
@@ -56,7 +60,7 @@ export default function Discover() {
                         style={styles.trendingGamesList}
                     >
 
-                        {games.map((game, index) => (
+                        {gamesReverse.map((game, index) => (
                             <GamesTry
                                 key={index}
                                 game={game}
@@ -102,7 +106,7 @@ export default function Discover() {
                     </View>
 
                     <View style={styles.newGamesList}>
-                        {games.slice(1).map((game, index) => (
+                        {gamesReverse.slice(1).map((game, index) => (
                             <NewGameCard
                                 key={index}
                                 game={game}

@@ -1,5 +1,6 @@
 import { FontAwesome } from "@expo/vector-icons";
 
+
 type FontAwesomeIconName = React.ComponentProps<typeof FontAwesome>["name"];
 type gameCategories = "Action" | "Adventure" | "Puzzle" | "Strategy" | "Simulation" | "Sports" | "Racing";
 
